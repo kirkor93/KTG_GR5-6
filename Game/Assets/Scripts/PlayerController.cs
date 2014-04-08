@@ -61,8 +61,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Just for testing, later touch input
-            if (Input.GetKey(KeyCode.D) && CurrentLane != -1)
+
+            //Just for testing, later touch input
+            /*
+             * We have invisible buttons to change lines so this is unnecessary
+
+			if (Input.GetKey(KeyCode.D) && CurrentLane != -1)
             {
                 CurrentLane--;
                 SideDirection = -1;
@@ -80,6 +84,7 @@ public class PlayerController : MonoBehaviour
                 newPos.z = transform.position.z;
                 SwitchingLanes = true;
             }
+            */
         }
     }
 }
