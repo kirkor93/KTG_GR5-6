@@ -27,8 +27,7 @@ public class PlayerController : MonoBehaviour
                 CurrentLane++;
                 SideDirection = 1;
                 newPos.x = transform.position.x + SideOffset;
-                newPos.y = transform.position.y;
-                newPos.z = transform.position.z;
+
                 SwitchingLanes = true;
             }
             if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton) && CurrentLane != -1)
@@ -36,8 +35,8 @@ public class PlayerController : MonoBehaviour
                 CurrentLane--;
                 SideDirection = -1;
                 newPos.x = transform.position.x - SideOffset;
-                newPos.y = transform.position.y;
-                newPos.z = transform.position.z;
+                //newPos.y = transform.position.y;
+                //newPos.z = transform.position.z;
                 SwitchingLanes = true;
             }
         }
@@ -50,10 +49,13 @@ public class PlayerController : MonoBehaviour
         {
             float step = SideSpeed * Time.deltaTime;
 
+			newPos.y = transform.position.y;
+			newPos.z = transform.position.z;
+
             transform.position = Vector3.MoveTowards(transform.position, newPos, step);
             transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + SideDirection * SideOffset / 2));
 
-            if (transform.position == newPos)
+            if (transform.position.x == newPos.x)
             {
                 transform.rotation = Quaternion.identity;
                 SwitchingLanes = false;
