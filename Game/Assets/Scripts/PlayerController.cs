@@ -4,40 +4,51 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     public float SideSpeed;
-    public float SideOffset;
     public GUIStyle invisibleButton;
     Vector3 newPos;
-    int CurrentLane;
-    int SideDirection;
-    bool SwitchingLanes;
+    public float[] Lanes = new float[3];
+    int CurrentLane, LastLane;
+    bool SwitchingLanes, JumpReady, Jump;
+    bool ButtonLeft, ButtonRight;
 
     // Use this for initialization
     void Start()
     {
-        CurrentLane = 0;
+        CurrentLane = 1;
+        LastLane = CurrentLane;
         SwitchingLanes = false;
+        JumpReady = false;
     }
 
     void OnGUI()
     {
+        ButtonLeft = ButtonRight = false;
         if (!SwitchingLanes)
         {
-            if (GUI.Button(new Rect(0, 0, Screen.width / 2, Screen.height), "Left", invisibleButton) && CurrentLane != 1)
+            if (GUI.Button(new Rect(0, 0, Screen.width / 2, Screen.height), "Left", invisibleButton) && CurrentLane != 2)
             {
-                CurrentLane++;
-                SideDirection = 1;
-                newPos.x = transform.position.x + SideOffset;
-
-                SwitchingLanes = true;
+                ButtonLeft = true;
             }
-            if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton) && CurrentLane != -1)
+            if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton) && CurrentLane != 0)
             {
-                CurrentLane--;
-                SideDirection = -1;
-                newPos.x = transform.position.x - SideOffset;
-                //newPos.y = transform.position.y;
-                //newPos.z = transform.position.z;
-                SwitchingLanes = true;
+                ButtonRight = true;
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Ramp")
+        {
+            Debug.Log("Collision with Ramp, jump.");
+            if (JumpReady)
+            {
+                JumpReady = false;
+                Jump = true;
+            }
+            else
+            {
+                // Die.
             }
         }
     }
@@ -53,7 +64,7 @@ public class PlayerController : MonoBehaviour
 			newPos.z = transform.position.z;
 
             transform.position = Vector3.MoveTowards(transform.position, newPos, step);
-            transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + SideDirection * SideOffset / 2));
+            transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + (Lanes[CurrentLane]-Lanes[LastLane]) / 2));
 
             if (transform.position.x == newPos.x)
             {
@@ -61,32 +72,23 @@ public class PlayerController : MonoBehaviour
                 SwitchingLanes = false;
             }
         }
-        else
+
+        if(ButtonLeft && ButtonRight)
         {
-
-            //Just for testing, later touch input
-            /*
-             * We have invisible buttons to change lines so this is unnecessary
-
-			if (Input.GetKey(KeyCode.D) && CurrentLane != -1)
-            {
-                CurrentLane--;
-                SideDirection = -1;
-                newPos.x = transform.position.x - SideOffset;
-                newPos.y = transform.position.y;
-                newPos.z = transform.position.z;
-                SwitchingLanes = true;
-            }
-            else if (Input.GetKey(KeyCode.A) && CurrentLane != 1)
-            {
-                CurrentLane++;
-                SideDirection = 1;
-                newPos.x = transform.position.x + SideOffset;
-                newPos.y = transform.position.y;
-                newPos.z = transform.position.z;
-                SwitchingLanes = true;
-            }
-            */
+            JumpReady = true;
         }
+        else if(ButtonLeft && CurrentLane != 2)
+        {
+            LastLane = CurrentLane++;
+            newPos.x = Lanes[CurrentLane];
+            SwitchingLanes = true;
+        }
+        else if(ButtonRight && CurrentLane != 0)
+        {
+            LastLane = CurrentLane--;
+            newPos.x = Lanes[CurrentLane];
+            SwitchingLanes = true;
+        }
+
     }
 }
