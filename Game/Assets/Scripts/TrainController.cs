@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class TrainController : MonoBehaviour {
 
 	public GameObject coinPrefab;
 	public float coinProbability = 0.8f;
+	public GameObject barrelPrefab;
+	public float barrelCooldown;
+	public float barrelDelay=5.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +34,12 @@ public class TrainController : MonoBehaviour {
 			coinPosition.x = lane*2.5f;
 			Instantiate(coinPrefab, coinPosition, coinPrefab.transform.rotation);
 		}
-
+		///// barrel///
+		barrelCooldown += Time.deltaTime;
+		if (barrelCooldown >= barrelDelay) {
+			barrelCooldown=0;
+			Vector3 barrelPosition = this.transform.position;
+			Instantiate (barrelPrefab,barrelPosition, barrelPrefab.transform.rotation);
+		}
 	}
 }

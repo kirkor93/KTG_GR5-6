@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     int CurrentLane, LastLane;
     bool SwitchingLanes, JumpReady, Jump;
     bool ButtonLeft, ButtonRight;
+	public float deathDelay=2.0f;
 
     // Use this for initialization
     void Start()
@@ -91,4 +92,10 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+	IEnumerator Death(){
+		yield return new WaitForSeconds(deathDelay);
+		Destroy (this.gameObject);
+		Debug.Log ("Umalem");
+	}
 }
