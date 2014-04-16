@@ -3,14 +3,15 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public float SideSpeed;
+    public float SideSpeed = 5.0f, ForwardSpeed = 5.0f;
     public GUIStyle invisibleButton;
     Vector3 newPos;
     public float[] Lanes = new float[3];
     int CurrentLane, LastLane;
     bool SwitchingLanes, JumpReady, Jump;
     bool ButtonLeft, ButtonRight;
-	public float deathDelay=2.0f;
+    bool Alive = true;
+	public float deathDelay = 2.0f;
 
     // Use this for initialization
     void Start()
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Ramp")
+        if (other.gameObject.tag == "Ramp" && !Jump)
         {
             Debug.Log("Collision with Ramp, jump.");
             if (JumpReady)
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                // Die.
+                StartCoroutine("Death");
             }
         }
     }
@@ -57,45 +58,59 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SwitchingLanes)
+        if (Alive)
         {
-            float step = SideSpeed * Time.deltaTime;
+            // Forward movement
+            transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
 
-			newPos.y = transform.position.y;
-			newPos.z = transform.position.z;
-
-            transform.position = Vector3.MoveTowards(transform.position, newPos, step);
-            transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + (Lanes[CurrentLane]-Lanes[LastLane]) / 2));
-
-            if (transform.position.x == newPos.x)
+            // Lanes switching mechanism
+            if (SwitchingLanes)
             {
-                transform.rotation = Quaternion.identity;
-                SwitchingLanes = false;
+                float step = SideSpeed * Time.deltaTime;
+
+                newPos.y = transform.position.y;
+                newPos.z = transform.position.z;
+
+                transform.position = Vector3.MoveTowards(transform.position, newPos, step);
+                transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + (Lanes[CurrentLane] - Lanes[LastLane]) / 2));
+
+                if (transform.position.x == newPos.x)
+                {
+                    transform.rotation = Quaternion.identity;
+                    SwitchingLanes = false;
+                }
+            }
+
+            // Buttons handling
+            if (ButtonLeft && ButtonRight)
+            {
+                JumpReady = true;
+            }
+            else if (ButtonLeft && CurrentLane != 2)
+            {
+                LastLane = CurrentLane++;
+                newPos.x = Lanes[CurrentLane];
+                SwitchingLanes = true;
+            }
+            else if (ButtonRight && CurrentLane != 0)
+            {
+                LastLane = CurrentLane--;
+                newPos.x = Lanes[CurrentLane];
+                SwitchingLanes = true;
             }
         }
-
-        if(ButtonLeft && ButtonRight)
-        {
-            JumpReady = true;
-        }
-        else if(ButtonLeft && CurrentLane != 2)
-        {
-            LastLane = CurrentLane++;
-            newPos.x = Lanes[CurrentLane];
-            SwitchingLanes = true;
-        }
-        else if(ButtonRight && CurrentLane != 0)
-        {
-            LastLane = CurrentLane--;
-            newPos.x = Lanes[CurrentLane];
-            SwitchingLanes = true;
-        }
-
     }
 
 	IEnumerator Death(){
+        // To jest moja chora wyobraznia...
+        SideSpeed = 1.0f;
+        int T = LastLane;
+        LastLane = CurrentLane;
+        CurrentLane = T;
+        newPos.x = Lanes[CurrentLane];
+        SwitchingLanes = true;
 		yield return new WaitForSeconds(deathDelay);
-		Destroy (this.gameObject);
+        Alive = false;
 		Debug.Log ("Umalem");
 	}
 }

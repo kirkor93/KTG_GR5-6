@@ -7,7 +7,8 @@ public class TrainController : MonoBehaviour {
 	public float coinProbability = 0.8f;
 	public GameObject barrelPrefab;
 	public float barrelCooldown;
-	public float barrelDelay=5.0f;
+	public float barrelDelay = 5.0f;
+    public float ForwardSpeed = 5.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,9 @@ public class TrainController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        // Forward Movement
+        transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
+
 		while(coinProbability > 1.0f)
 		{
 			coinProbability--;
@@ -28,12 +32,12 @@ public class TrainController : MonoBehaviour {
 		int rndNumber = Random.Range (0, 10000);
 		if((float)rndNumber/10000 >= coinProbability)
 		{
-			int lane = Random.Range (0,3);
-			lane--;
+			int lane = Random.Range (0,3) - 1;
 			Vector3 coinPosition = this.transform.position;
 			coinPosition.x = lane*2.5f;
 			Instantiate(coinPrefab, coinPosition, coinPrefab.transform.rotation);
 		}
+
 		///// barrel///
 		barrelCooldown += Time.deltaTime;
 		if (barrelCooldown >= barrelDelay) {
