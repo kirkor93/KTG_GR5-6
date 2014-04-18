@@ -6,7 +6,7 @@ public class Barrel : MonoBehaviour {
 	public float speed;
 	
 	void Start () {
-		Destroy (this.gameObject, 5);
+		//Destroy (this.gameObject, 5);
 	}
 
 	void Update () {
@@ -17,7 +17,11 @@ public class Barrel : MonoBehaviour {
 		rigidbody.velocity = speed* Vector3.forward;	
 	}
 
-	
+    void OnBecameInvisible()
+    {
+        Destroy(this.gameObject);
+    }
+
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Player")
 		{
