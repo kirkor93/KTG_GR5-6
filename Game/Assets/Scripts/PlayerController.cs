@@ -111,6 +111,6 @@ public class PlayerController : MonoBehaviour
         SwitchingLanes = true;
 		yield return new WaitForSeconds(deathDelay);
         Alive = false;
-		Debug.Log ("Umalem");
+	//	Debug.Log ("Umalem");
 	}
 }
