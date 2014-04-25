@@ -9,7 +9,7 @@ public class Coin : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rotationSpeed = 180.0f;
-		StartCoroutine ("waitToDestroy");
+		//StartCoroutine ("waitToDestroy");
 	}
 	
 	// Update is called once per frame
@@ -26,6 +26,11 @@ public class Coin : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+    void OnBecameInvisible()
+    {
+        Destroy(this.gameObject);
+    }
 
 	IEnumerator waitToDestroy()
 	{

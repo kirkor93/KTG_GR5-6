@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public float SideSpeed = 5.0f, ForwardSpeed = 5.0f;
     public GUIStyle invisibleButton;
+    public GameObject Player;
     Vector3 newPos;
     public float[] Lanes = new float[3];
     int CurrentLane, LastLane;
@@ -27,11 +28,11 @@ public class PlayerController : MonoBehaviour
         ButtonLeft = ButtonRight = false;
         if (!SwitchingLanes)
         {
-            if (GUI.Button(new Rect(0, 0, Screen.width / 2, Screen.height), "Left", invisibleButton) && CurrentLane != 2)
+            if (GUI.Button(new Rect(0, 0, Screen.width / 2, Screen.height), "Left", invisibleButton))
             {
                 ButtonLeft = true;
             }
-            if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton) && CurrentLane != 0)
+            if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton))
             {
                 ButtonRight = true;
             }
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
             {
                 JumpReady = false;
                 Jump = true;
+                StartCoroutine("WaitForJump");
             }
             else
             {
@@ -61,7 +63,7 @@ public class PlayerController : MonoBehaviour
         if (Alive)
         {
             // Forward movement
-            transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
+            Player.transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
 
             // Lanes switching mechanism
             if (SwitchingLanes)
@@ -80,37 +82,54 @@ public class PlayerController : MonoBehaviour
                     SwitchingLanes = false;
                 }
             }
+            else
+            {
+                JumpReady = ButtonLeft = ButtonRight = false;
+                int i = 0;
+                while (i < Input.touchCount)
+                {
+                    if (Input.GetTouch(i).position.x > Screen.width / 2)
+                    {
+                        ButtonRight = true;
+                    }
+                    else
+                    {
+                        ButtonLeft = true;
+                    }
+                    i++;
+                }
 
-            // Buttons handling
-            if (ButtonLeft && ButtonRight)
-            {
-                JumpReady = true;
-            }
-            else if (ButtonLeft && CurrentLane != 2)
-            {
-                LastLane = CurrentLane++;
-                newPos.x = Lanes[CurrentLane];
-                SwitchingLanes = true;
-            }
-            else if (ButtonRight && CurrentLane != 0)
-            {
-                LastLane = CurrentLane--;
-                newPos.x = Lanes[CurrentLane];
-                SwitchingLanes = true;
+                // Buttons handling
+                if (ButtonLeft && ButtonRight && !Jump)
+                {
+                    JumpReady = true;
+                }
+                else if (ButtonLeft && CurrentLane != 2 && !Jump)
+                {
+                    LastLane = CurrentLane++;
+                    newPos.x = Lanes[CurrentLane];
+                    SwitchingLanes = true;
+                }
+                else if (ButtonRight && CurrentLane != 0 && !Jump)
+                {
+                    LastLane = CurrentLane--;
+                    newPos.x = Lanes[CurrentLane];
+                    SwitchingLanes = true;
+                }
             }
         }
     }
 
-	IEnumerator Death(){
-        // To jest moja chora wyobraznia...
-        SideSpeed = 1.0f;
-        int T = LastLane;
-        LastLane = CurrentLane;
-        CurrentLane = T;
-        newPos.x = Lanes[CurrentLane];
-        SwitchingLanes = true;
+	IEnumerator Death()
+    {    
 		yield return new WaitForSeconds(deathDelay);
         Alive = false;
 	//	Debug.Log ("Umalem");
 	}
+
+    IEnumerator WaitForJump()
+    {
+        yield return new WaitForSeconds(2);
+        Jump = false;
+    }
 }
