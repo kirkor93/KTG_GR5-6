@@ -7,7 +7,7 @@ public class Barrel : MonoBehaviour {
 	public ParticleSystem explo;
 	
 	void Start () {
-		//Destroy (this.gameObject, 5);
+		Destroy (this.gameObject, 5);
 	}
 
 	void Update () {
@@ -33,7 +33,8 @@ public class Barrel : MonoBehaviour {
 	}
 
 	private ParticleSystem instantiate(ParticleSystem prefab, Vector3 position){
-		ParticleSystem newParticleSystem = Instantiate(prefab,position,Quaternion.identity) as ParticleSystem;
+		Vector3 wektor = new Vector3(position.x,position.y+1,position.z-1);
+		ParticleSystem newParticleSystem = Instantiate(prefab,wektor,Quaternion.identity) as ParticleSystem;
 		Destroy(newParticleSystem.gameObject,newParticleSystem.startLifetime);
 		return newParticleSystem;
 	}
