@@ -23,23 +23,7 @@ public class PlayerController : MonoBehaviour
         JumpReady = false;
     }
 
-    void OnGUI()
-    {
-        ButtonLeft = ButtonRight = false;
-        if (!SwitchingLanes)
-        {
-            if (GUI.Button(new Rect(0, 0, Screen.width / 2, Screen.height), "Left", invisibleButton))
-            {
-                ButtonLeft = true;
-            }
-            if (GUI.Button(new Rect(Screen.width / 2, 0, Screen.width / 2, Screen.height), "Right", invisibleButton))
-            {
-                ButtonRight = true;
-            }
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Ramp" && !Jump)
         {
@@ -99,22 +83,35 @@ public class PlayerController : MonoBehaviour
                     i++;
                 }
 
+                if(Input.GetKey(KeyCode.A))
+                {
+                    ButtonLeft = true;
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    ButtonRight = true;
+                }
+
                 // Buttons handling
-                if (ButtonLeft && ButtonRight && !Jump)
+                if (!Jump)
                 {
-                    JumpReady = true;
-                }
-                else if (ButtonLeft && CurrentLane != 2 && !Jump)
-                {
-                    LastLane = CurrentLane++;
-                    newPos.x = Lanes[CurrentLane];
-                    SwitchingLanes = true;
-                }
-                else if (ButtonRight && CurrentLane != 0 && !Jump)
-                {
-                    LastLane = CurrentLane--;
-                    newPos.x = Lanes[CurrentLane];
-                    SwitchingLanes = true;
+                    if (ButtonLeft && ButtonRight)
+                    {
+                        JumpReady = true;
+                    }
+                    else if (ButtonLeft && CurrentLane != 2)
+                    {
+                        LastLane = CurrentLane++;
+                        newPos.x = Lanes[CurrentLane];
+                        SwitchingLanes = true;
+                    }
+                    else if (ButtonRight && CurrentLane != 0)
+                    {
+                        LastLane = CurrentLane--;
+                        newPos.x = Lanes[CurrentLane];
+                        SwitchingLanes = true;
+                    }
                 }
             }
         }
@@ -129,7 +126,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator WaitForJump()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         Jump = false;
     }
 }
