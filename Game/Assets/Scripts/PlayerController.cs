@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
     {    
 		yield return new WaitForSeconds(deathDelay);
         Alive = false;
-		Debug.Log ("Umalem");
+	//	Debug.Log ("Umalem");
 	}
 
     IEnumerator WaitForJump()
