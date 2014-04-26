@@ -33,7 +33,8 @@ public class Barrel : MonoBehaviour {
 	}
 
 	private ParticleSystem instantiate(ParticleSystem prefab, Vector3 position){
-		ParticleSystem newParticleSystem = Instantiate(prefab,position,Quaternion.identity) as ParticleSystem;
+		Vector3 wek = new Vector3 (position.x, position.y + 1, position.z - 1);
+		ParticleSystem newParticleSystem = Instantiate(prefab,wek,Quaternion.identity) as ParticleSystem;
 		Destroy(newParticleSystem.gameObject,newParticleSystem.startLifetime);
 		return newParticleSystem;
 	}
