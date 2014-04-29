@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    static public Vector3 playerPos;
     public float SideSpeed = 5.0f, ForwardSpeed = 5.0f;
     public GUIStyle invisibleButton;
     public GameObject Player;
@@ -48,6 +49,10 @@ public class PlayerController : MonoBehaviour
         {
             // Forward movement
             Player.transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
+
+            playerPos.x = transform.position.x;
+            playerPos.y = transform.position.y;
+            playerPos.z = Player.transform.position.z;
 
             // Lanes switching mechanism
             if (SwitchingLanes)

@@ -22,6 +22,10 @@ public class TrainController : MonoBehaviour
 
     public float ForwardSpeed = 5.0f;
 
+    public float tntCooldown;
+    public float tntDelay;
+    public GameObject tntPrefab;
+
     // Use this for initialization
     void Start()
     {
@@ -95,6 +99,20 @@ public class TrainController : MonoBehaviour
             }
             rampPosition.z = transform.position.z - 20;
             Instantiate(rampPrefab, rampPosition, rampPrefab.transform.rotation);
+        }
+
+        // TNT
+        // TODO: chance based instead of time based
+        tntCooldown += Time.deltaTime;
+        if(tntCooldown >= tntDelay)
+        {
+            Vector3 target = PlayerController.playerPos;
+            Vector3 tntPos = transform.position;
+            tntPos.z += 1;
+            GameObject tnt = Instantiate(tntPrefab, tntPos, tntPrefab.transform.rotation) as GameObject;
+            tnt.rigidbody.AddForce(0.8f*target.x, 6, 7, ForceMode.Impulse);
+            tnt.rigidbody.AddTorque(1, 2, 3);
+            tntCooldown = 0;
         }
     }
 }
