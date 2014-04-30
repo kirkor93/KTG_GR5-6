@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     static public Vector3 playerPos;
+    public static PlayerController instance = null;
+    public ParticleSystem explo;
     public float SideSpeed = 5.0f, ForwardSpeed = 5.0f;
     public GUIStyle invisibleButton;
     public GameObject Player;
@@ -22,6 +24,10 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this.gameObject);
         CurrentLane = 1;
         LastLane = CurrentLane;
         SwitchingLanes = false;
@@ -135,6 +141,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Smoke()
+    {
+        explo.Play();
     }
 
 	IEnumerator Death()
