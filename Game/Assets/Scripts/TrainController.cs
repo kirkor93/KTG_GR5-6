@@ -22,9 +22,12 @@ public class TrainController : MonoBehaviour
 
     public float ForwardSpeed = 5.0f;
 
-    public float tntCooldown;
-    public float tntDelay;
+    float throwCooldown;
+    public float throwDelay;
+    public float tntProp;
     public GameObject tntPrefab;
+    public float whiskeyProp;
+    public GameObject whiskeyPrefab;
 
     // Use this for initialization
     void Start()
@@ -102,17 +105,49 @@ public class TrainController : MonoBehaviour
         }
 
         // TNT
-        // TODO: chance based instead of time based
-        tntCooldown += Time.deltaTime;
-        if(tntCooldown >= tntDelay)
+        throwCooldown += Time.deltaTime;
+        if (throwCooldown >= throwDelay)
         {
+            float tntRand = Random.Range(0, 100) / 100.0f;
+            float whiskeyRand = Random.Range(0, 100) / 100.0f;
+            int whatToThrow = 0;
             Vector3 target = PlayerController.playerPos;
-            Vector3 tntPos = transform.position;
-            tntPos.z += 1;
-            GameObject tnt = Instantiate(tntPrefab, tntPos, tntPrefab.transform.rotation) as GameObject;
-            tnt.rigidbody.AddForce(0.8f*target.x, 6, 7, ForceMode.Impulse);
-            tnt.rigidbody.AddTorque(1, 2, 3);
-            tntCooldown = 0;
+
+            if (tntRand >= (1.0f - tntProp) && whiskeyRand >= (1.0f - whiskeyProp))
+            {
+                whatToThrow = Random.Range(0, 2);
+            }
+            else if (tntRand >= (1.0f - tntProp))
+            {
+                whatToThrow = 1;
+            }
+            else if (whiskeyRand >= (1.0f - whiskeyProp))
+            {
+                whatToThrow = 2;
+            }
+
+            switch (whatToThrow)
+            {
+                // TNT
+                case 1:
+                    //Vector3 target = PlayerController.playerPos;
+                    Vector3 tntPos = transform.position;
+                    tntPos.z += 1;
+                    GameObject tnt = Instantiate(tntPrefab, tntPos, tntPrefab.transform.rotation) as GameObject;
+                    tnt.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
+                    tnt.rigidbody.AddTorque(1, 2, 3);
+                    break;
+                // Whiskey
+                case 2:
+                    //Vector3 target = PlayerController.playerPos;
+                    Vector3 whiskeyPos = transform.position;
+                    whiskeyPos.z += 1;
+                    GameObject whiskey = Instantiate(whiskeyPrefab, whiskeyPos, whiskeyPrefab.transform.rotation) as GameObject;
+                    whiskey.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
+                    whiskey.rigidbody.AddTorque(1, 2, 3);
+                    break;
+            }
+            throwCooldown = 0;
         }
     }
 }

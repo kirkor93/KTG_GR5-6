@@ -7,12 +7,16 @@ public class PlayerController : MonoBehaviour
     public float SideSpeed = 5.0f, ForwardSpeed = 5.0f;
     public GUIStyle invisibleButton;
     public GameObject Player;
+    Quaternion cameraRotationDefault;
     Vector3 newPos;
     public float[] Lanes = new float[3];
     int CurrentLane, LastLane;
     bool SwitchingLanes, JumpReady, Jump;
     bool ButtonLeft, ButtonRight;
     bool Alive = true;
+    bool Drunk = false;
+    float drunkTime;
+    float drunkAngle;
 	public float deathDelay = 2.0f;
 
     // Use this for initialization
@@ -22,6 +26,7 @@ public class PlayerController : MonoBehaviour
         LastLane = CurrentLane;
         SwitchingLanes = false;
         JumpReady = false;
+        cameraRotationDefault = Camera.main.transform.rotation;
     }
 
     void OnCollisionEnter(Collision other)
@@ -49,6 +54,16 @@ public class PlayerController : MonoBehaviour
         {
             // Forward movement
             Player.transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
+            if(Drunk)
+            {
+                drunkTime -= Time.deltaTime;
+                Camera.main.transform.Rotate(transform.forward, drunkAngle*Time.deltaTime);
+                if (drunkTime <= 0)
+                {
+                    Drunk = false;
+                    Camera.main.transform.rotation = cameraRotationDefault;
+                }
+            }
 
             playerPos.x = transform.position.x;
             playerPos.y = transform.position.y;
@@ -126,8 +141,15 @@ public class PlayerController : MonoBehaviour
     {    
 		yield return new WaitForSeconds(deathDelay);
         Alive = false;
-	//	Debug.Log ("Umalem");
-	}
+    }
+
+    IEnumerator WhiskeyInAJar(float WhiskeyPowwa)
+    {
+        Drunk = true;
+        drunkTime = WhiskeyPowwa;
+        drunkAngle = 360.0f / WhiskeyPowwa;
+        yield return null;
+    }
 
     IEnumerator WaitForJump()
     {
