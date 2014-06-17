@@ -80,7 +80,7 @@ public class TrainController : MonoBehaviour
         if (barrelCooldown >= barrelDelay)
         {
             barrelCooldown = 0;
-            Vector3 barrelPosition = barrelPrefab.transform.position;
+			Vector3 barrelPosition = barrelPrefab.transform.position + new Vector3(0.0f, 0.5f, 0.0f);
             barrelPosition.z = transform.position.z;
             Instantiate(barrelPrefab, barrelPosition, barrelPrefab.transform.rotation);
         }

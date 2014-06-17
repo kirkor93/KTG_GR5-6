@@ -7,11 +7,10 @@ public class Barrel : MonoBehaviour {
 	public ParticleSystem explo;
 	
 	void Start () {
-		//Destroy (this.gameObject, 5);
 	}
 
 	void Update () {
-		transform.Rotate (Vector3.up, Time.deltaTime * rotationSpeed);
+		transform.Rotate (Vector3.forward, Time.deltaTime * rotationSpeed);
 	}
 
 	void FixedUpdate(){

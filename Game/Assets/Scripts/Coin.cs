@@ -9,14 +9,12 @@ public class Coin : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rotationSpeed = 180.0f;
-		//StartCoroutine ("waitToDestroy");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//probability can't be more than 1 or less than 0
 
-		transform.Rotate (Vector3.forward, Time.deltaTime * rotationSpeed);
+		transform.Rotate (Vector3.left, Time.deltaTime * rotationSpeed);
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -25,16 +23,5 @@ public class Coin : MonoBehaviour {
 			Inventory.CoinCount++;
 			Destroy(this.gameObject);
 		}
-	}
-
-    void OnBecameInvisible()
-    {
-        Destroy(this.gameObject);
-    }
-
-	IEnumerator waitToDestroy()
-	{
-		yield return new WaitForSeconds(2.0f);
-		Destroy (this.gameObject);
 	}
 }

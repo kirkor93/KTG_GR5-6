@@ -56,92 +56,74 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Alive)
-        {
-            // Forward movement
-            Player.transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
-            if(Drunk)
-            {
-                drunkTime -= Time.deltaTime;
-                Camera.main.transform.Rotate(transform.forward, drunkAngle*Time.deltaTime);
-                if (drunkTime <= 0)
-                {
-                    Drunk = false;
-                    Camera.main.transform.rotation = cameraRotationDefault;
-                }
-            }
+				if (Alive) {
+						// Forward movement
+						Player.transform.Translate (0, 0, -ForwardSpeed * Time.deltaTime);
+						if (Drunk) {
+								drunkTime -= Time.deltaTime;
+								Camera.main.transform.Rotate (transform.forward, drunkAngle * Time.deltaTime);
+								if (drunkTime <= 0) {
+										Drunk = false;
+										Camera.main.transform.rotation = cameraRotationDefault;
+								}
+						}
 
-            playerPos.x = transform.position.x;
-            playerPos.y = transform.position.y;
-            playerPos.z = Player.transform.position.z;
+						playerPos.x = transform.position.x;
+						playerPos.y = transform.position.y;
+						playerPos.z = Player.transform.position.z;
 
-            // Lanes switching mechanism
-            if (SwitchingLanes)
-            {
-                float step = SideSpeed * Time.deltaTime;
+						//Lanes switching mechanism
+						if (SwitchingLanes) {
+								float step = SideSpeed * Time.deltaTime;
 
-                newPos.y = transform.position.y;
-                newPos.z = transform.position.z;
+								newPos.y = transform.position.y;
+								newPos.z = transform.position.z;
 
-                transform.position = Vector3.MoveTowards(transform.position, newPos, step);
-                transform.Rotate(transform.forward, 2 * (transform.position.x - newPos.x + (Lanes[CurrentLane] - Lanes[LastLane]) / 2));
+								transform.position = Vector3.MoveTowards (transform.position, newPos, step);
+								transform.Rotate (transform.forward, 2 * (transform.position.x - newPos.x + (Lanes [CurrentLane] - Lanes [LastLane]) / 2));
 
-                if (transform.position.x == newPos.x)
-                {
-                    transform.rotation = Quaternion.identity;
-                    SwitchingLanes = false;
-                }
-            }
-            else
-            {
-                JumpReady = ButtonLeft = ButtonRight = false;
-                int i = 0;
-                while (i < Input.touchCount)
-                {
-                    if (Input.GetTouch(i).position.x > Screen.width / 2)
-                    {
-                        ButtonRight = true;
-                    }
-                    else
-                    {
-                        ButtonLeft = true;
-                    }
-                    i++;
-                }
+								if (transform.position.x == newPos.x) {
+										transform.rotation = Quaternion.identity;
+										SwitchingLanes = false;
+								}
 
-                if(Input.GetKey(KeyCode.A))
-                {
-                    ButtonLeft = true;
-                }
+						} else {
+								JumpReady = ButtonLeft = ButtonRight = false;
+								int i = 0;
+								while (i < Input.touchCount) {
+										if (Input.GetTouch (i).position.x > Screen.width / 2) {
+												ButtonRight = true;
+										} else {
+												ButtonLeft = true;
+										}
+										i++;
+								}
 
-                if (Input.GetKey(KeyCode.D))
-                {
-                    ButtonRight = true;
-                }
+								if (Input.GetKey (KeyCode.A)) {
+										ButtonLeft = true;
+								}
 
-                // Buttons handling
-                if (!Jump)
-                {
-                    if (ButtonLeft && ButtonRight)
-                    {
-                        JumpReady = true;
-                    }
-                    else if (ButtonLeft && CurrentLane != 2)
-                    {
-                        LastLane = CurrentLane++;
-                        newPos.x = Lanes[CurrentLane];
-                        SwitchingLanes = true;
-                    }
-                    else if (ButtonRight && CurrentLane != 0)
-                    {
-                        LastLane = CurrentLane--;
-                        newPos.x = Lanes[CurrentLane];
-                        SwitchingLanes = true;
-                    }
-                }
-            }
-        }
-    }
+								if (Input.GetKey (KeyCode.D)) {
+										ButtonRight = true;
+								}
+
+								// Buttons handling
+								if (!Jump) {
+										if (ButtonLeft && ButtonRight) {
+												JumpReady = true;
+										} else if (ButtonLeft && CurrentLane != 2) {
+												LastLane = CurrentLane++;
+												newPos.x = Lanes [CurrentLane];
+												SwitchingLanes = true;
+										} else if (ButtonRight && CurrentLane != 0) {
+												LastLane = CurrentLane--;
+												newPos.x = Lanes [CurrentLane];
+												SwitchingLanes = true;
+										}
+								}
+						}
+				}
+		}
 
     public void Smoke()
     {

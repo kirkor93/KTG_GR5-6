@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Ramp : MonoBehaviour {
+public class Track : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -9,6 +9,6 @@ public class Ramp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 }
