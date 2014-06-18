@@ -85,8 +85,11 @@ public class PlayerController : MonoBehaviour
 								if (transform.position.x == newPos.x) {
 										transform.rotation = Quaternion.identity;
 										SwitchingLanes = false;
-								}
 
+						}
+				
+				//newPos = new Vector3(CurrentLane*2.5f,0.0f,transform.position.z);
+				//transform.position = Vector3.MoveTowards (transform.position, newPos, 5.0f);
 						} else {
 								JumpReady = ButtonLeft = ButtonRight = false;
 								int i = 0;
