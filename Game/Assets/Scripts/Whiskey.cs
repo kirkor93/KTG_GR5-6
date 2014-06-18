@@ -25,7 +25,7 @@ public class Whiskey : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
-            other.gameObject.SendMessage("WhiskeyInAJar", 6.0f);
+            other.gameObject.SendMessage("WhiskeyInAJar", 1.5f);
         }
     }
 }
