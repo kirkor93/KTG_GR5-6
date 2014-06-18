@@ -10,8 +10,11 @@ ModelImporter:
     400002: laska002
     400004: //RootNode
     2300000: laska002
+    2300002: //RootNode
     3300000: laska002
+    3300002: //RootNode
     4300000: laska002
+    4300002: laska
     9500000: //RootNode
   materials:
     importMaterials: 1
