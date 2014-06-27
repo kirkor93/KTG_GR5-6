@@ -137,6 +137,7 @@ public class PlayerController : MonoBehaviour
     {    
 		yield return new WaitForSeconds(deathDelay);
         Alive = false;
+        Application.LoadLevel("DeathScreen");
     }
 
     IEnumerator WhiskeyInAJar(float WhiskeyPowwa)

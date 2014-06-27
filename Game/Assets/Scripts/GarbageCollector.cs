@@ -15,6 +15,11 @@ public class GarbageCollector : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) 
 	{
-		Destroy (other.gameObject);
+        float time = 0.0f;
+        if (other.gameObject.tag == "Terrain")
+        {
+            time = 20.0f;
+        }
+		Destroy (other.gameObject, time);
 	}
 }

@@ -59,7 +59,7 @@ public class TrainController : MonoBehaviour
                 coinCooldown = 0;
                 coinCount = Random.Range(3, 6);
                 coinLane = Random.Range(0, 3) - 1;
-                coinPos.x = coinLane * 2.5f;
+                coinPos.x = coinLane * 10.0f;
                 coinPos.y = coinPrefab.transform.position.y;
             }
         }
@@ -94,11 +94,11 @@ public class TrainController : MonoBehaviour
             int rampLane = Random.Range(0, 2);
             if (rampLane == 0)
             {
-                rampPosition.x = -2.5f;
+                rampPosition.x = -10.0f;
             }
             else
             {
-                rampPosition.x = 2.5f;
+                rampPosition.x = 10.0f;
             }
             rampPosition.z = transform.position.z - 20;
             Instantiate(rampPrefab, rampPosition, rampPrefab.transform.rotation);
