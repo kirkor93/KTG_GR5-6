@@ -23,7 +23,7 @@ public class TNT : MonoBehaviour {
         //if (other.gameObject.tag == "Terrain")
         {
             Debug.Log("Collision!");
-            PlayerController.instance.Smoke();
+//            PlayerController.instance.Smoke();
             Destroy(this.gameObject);
         }
     }

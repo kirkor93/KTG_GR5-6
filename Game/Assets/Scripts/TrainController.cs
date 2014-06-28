@@ -80,7 +80,7 @@ public class TrainController : MonoBehaviour
         if (barrelCooldown >= barrelDelay)
         {
             barrelCooldown = 0;
-			Vector3 barrelPosition = barrelPrefab.transform.position + new Vector3(-0.5f, 0.0f, 0.0f);
+			Vector3 barrelPosition = barrelPrefab.transform.position + new Vector3(-0.5f, 1.0f, 0.0f);
             barrelPosition.z = transform.position.z;
             Instantiate(barrelPrefab, barrelPosition, barrelPrefab.transform.rotation);
         }
@@ -111,7 +111,7 @@ public class TrainController : MonoBehaviour
             float tntRand = Random.Range(0, 100) / 100.0f;
             float whiskeyRand = Random.Range(0, 100) / 100.0f;
             int whatToThrow = 0;
-            Vector3 target = PlayerController.playerPos;
+//            Vector3 target = PlayerController.playerPos;
 
             if (tntRand >= (1.0f - tntProp) && whiskeyRand >= (1.0f - whiskeyProp))
             {
@@ -134,7 +134,7 @@ public class TrainController : MonoBehaviour
                     Vector3 tntPos = transform.position;
                     tntPos.z += 1;
                     GameObject tnt = Instantiate(tntPrefab, tntPos, tntPrefab.transform.rotation) as GameObject;
-                    tnt.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
+    //                tnt.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
                     tnt.rigidbody.AddTorque(1, 2, 3);
                     break;
                 // Whiskey
@@ -143,7 +143,7 @@ public class TrainController : MonoBehaviour
                     Vector3 whiskeyPos = transform.position;
                     whiskeyPos.z += 1;
                     GameObject whiskey = Instantiate(whiskeyPrefab, whiskeyPos, whiskeyPrefab.transform.rotation) as GameObject;
-                    whiskey.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
+      //              whiskey.rigidbody.AddForce(0.8f * target.x, 6, 7, ForceMode.Impulse); // lol, lucky shot for force vector
                     whiskey.rigidbody.AddTorque(1, 2, 3);
                     break;
             }
