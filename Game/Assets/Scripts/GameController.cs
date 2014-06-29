@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour {
 
 	private GameObject currentLine;
 	private float lineEnding;
-    public float HowFar;
 
     public float MiscCooldown = 0.8f;
     private float cooldown = 0.0f;
@@ -71,20 +70,20 @@ public class GameController : MonoBehaviour {
                 int x = Random.Range(0, 2);
                 if (x == 0)
                 {
-                    currentLine = Instantiate(LeftLineHole, new Vector3(0, 0, lineEnding - HowFar), Quaternion.identity) as GameObject;
+                    currentLine = Instantiate(LeftLineHole, new Vector3(0, 0, currentLine.transform.position.z - 150.0f), Quaternion.identity) as GameObject;
                 }
                 else
                 {
-                    currentLine = Instantiate(RightLineHole, new Vector3(0, 0, lineEnding - HowFar), Quaternion.identity) as GameObject;
+                    currentLine = Instantiate(RightLineHole, new Vector3(0, 0, currentLine.transform.position.z - 150.0f), Quaternion.identity) as GameObject;
                 }
-                currentLine.transform.Rotate(Vector3.up, -90.0f);
-                lineEnding -= (80.0f + HowFar);
+                currentLine.transform.Rotate(Vector3.up, 90.0f);
+                lineEnding -= 120.0f;
             }
             else
             {
-                currentLine = Instantiate(StraightLine, new Vector3(0, 0, lineEnding - HowFar), Quaternion.identity) as GameObject;
-                currentLine.transform.Rotate(Vector3.up, -90.0f);
-                lineEnding -= (80.0f + HowFar);
+                currentLine = Instantiate(StraightLine, new Vector3(0, 0, currentLine.transform.position.z - 150.0f), Quaternion.identity) as GameObject;
+                currentLine.transform.Rotate(Vector3.up, 90.0f);
+                lineEnding = 120.0f;
             }
         }
 	}
