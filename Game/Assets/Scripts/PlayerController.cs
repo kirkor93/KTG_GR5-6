@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 	Quaternion newRot;
 	Quaternion zeroRot;
 	public float speed;
-	public float deathDelay = 2.0f;
+	public float deathDelay = 10.0f;
 	public float turningMultiplier = 5.0f;
 	public GameObject player;
 		
@@ -89,9 +89,10 @@ public class PlayerController : MonoBehaviour {
 	}
 		
 	IEnumerator Death()
-	{
+    {
+        //death animation play
+        this.isAlive = false;
 		yield return new WaitForSeconds(deathDelay);
-		this.isAlive = false;
 		Application.LoadLevel("DeathScreen");
 	}
 		
