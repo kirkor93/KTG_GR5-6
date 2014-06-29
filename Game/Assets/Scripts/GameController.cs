@@ -31,11 +31,12 @@ public class GameController : MonoBehaviour {
         cooldown += Time.deltaTime;
         if (cooldown > MiscCooldown)
         {
+            Debug.Log("Cooldown activated");
             cooldown = 0.0f;
             int what = Random.Range(0, 2);
             float misc = Random.Range(0, 10000);
             misc /= 10000.0f;
-            float posX = Random.Range(1000, 5000);
+            float posX = Random.Range(2000, 5000);
             posX /= 100.0f;
             int plusMinus = Random.Range(0, 2);
             if (plusMinus == 0)
@@ -46,6 +47,7 @@ public class GameController : MonoBehaviour {
             {
                 if (misc > (1 - CactusProbability))
                 {
+                    Debug.Log("Cactus activated");
                     Instantiate(CactusPrefab, new Vector3(posX, 2.730092f, Train.transform.position.z - 30.0f), CactusPrefab.transform.rotation);
                 }
             }
@@ -53,6 +55,8 @@ public class GameController : MonoBehaviour {
             {
                 if (misc > (1 - SignProbability))
                 {
+
+                    Debug.Log("Sign activated");
                     Instantiate(SignPrefab, new Vector3(posX, 1.970203f, Train.transform.position.z - 30.0f), SignPrefab.transform.rotation);
                 }
             }

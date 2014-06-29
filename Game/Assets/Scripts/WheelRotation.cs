@@ -13,7 +13,8 @@ public class WheelRotation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		rigidbody.MoveRotation(new Quaternion(this.transform.rotation.x,this.transform.rotation.y,
-		                                      this.transform.rotation.z*speed*Time.deltaTime,this.transform.rotation.w));
+		//rigidbody.MoveRotation(new Quaternion(this.transform.rotation.x,this.transform.rotation.y,
+		                                     // this.transform.rotation.z*speed*Time.deltaTime,this.transform.rotation.w));
+        this.transform.Rotate(Vector3.forward, speed*Time.deltaTime);
 	}
 }

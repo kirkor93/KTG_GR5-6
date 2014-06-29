@@ -16,10 +16,10 @@ public class GarbageCollector : MonoBehaviour {
 	void OnTriggerEnter(Collider other) 
 	{
         float time = 0.0f;
-        if (other.gameObject.tag == "Terrain")
+        if(other.gameObject.tag == "Terrain")
         {
             time = 20.0f;
         }
-		Destroy (other.gameObject, time);
+        Destroy(other.gameObject, time);
 	}
 }
