@@ -42,7 +42,7 @@ public class TrainController : MonoBehaviour
     void Update()
     {
         // Forward Movement
-        transform.Translate(0, 0, -ForwardSpeed * Time.deltaTime);
+        transform.Translate(ForwardSpeed * Time.deltaTime, 0, 0);
 
         // Coins
         while (coinProbability > 1.0f)

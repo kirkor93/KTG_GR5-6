@@ -20,11 +20,7 @@ public class TNT : MonoBehaviour {
 
     void OnCollisionEnter(Collision other)
     {
-        //if (other.gameObject.tag == "Terrain")
-        {
-            Debug.Log("Collision!");
-//            PlayerController.instance.Smoke();
-            Destroy(this.gameObject);
-        }
+        //Particles !!
+        Destroy(this.gameObject);
     }
 }
